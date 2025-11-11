@@ -14,3 +14,16 @@ jobs:
           # your full deploy here, can be multiple steps to
       - name: Update last-deploy tag
         uses: hermitos/tag-deploy-actions/tag-push@v1
+          
+          # 🧾 Final confirmation summary
+      - name: Deployment summary
+        if: success()
+        run: |
+          {
+            echo "### ✅ Deployment Complete"
+            echo "- Repository: $GITHUB_REPOSITORY"
+            echo "- Branch: $GITHUB_REF_NAME"
+            echo "- Commit: \`$(git rev-parse --short HEAD)\`"
+            echo "- Tag updated: \`last-deploy\`"
+            echo "- Finished at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          } >> "$GITHUB_STEP_SUMMARY"
