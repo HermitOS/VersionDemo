@@ -1,0 +1,15 @@
+on:
+  workflow_call: {}
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Build & Deploy
+        run: |
+          # your full deploy here, can be multiple steps to
+      - name: Update last-deploy tag
+        uses: hermitos/actions/tag-push@v1
