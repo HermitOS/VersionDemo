@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
       - id: rollup
-        uses: hermitos/tag-deploy-actions/tag-rollup@v1
+        uses: hermitos/tag-deploy-actions/tag-rollup@main
       - name: Debug outputs
         run: |
           echo "has_changes=${{ steps.rollup.outputs.has_changes }}"
