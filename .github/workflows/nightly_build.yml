@@ -16,13 +16,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.rollup.outputs.has_changes }}
+      base_tag:    ${{ steps.rollup.outputs.base_tag || '' }}
+      ahead:       ${{ steps.rollup.outputs.ahead || '0' }}
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
       - id: rollup
         uses: hermitos/tag-deploy-actions/tag-rollup@v1
+      - name: Debug outputs
+        run: |
+          echo "has_changes=${{ steps.rollup.outputs.has_changes }}"
+          echo "base_tag=${{ steps.rollup.outputs.base_tag }}"
+          echo "ahead=${{ steps.rollup.outputs.ahead }}"
 
   call-deploy:
     needs: check
-    if: needs.check.outputs.has_changes == 'true'
+    if: ${{ fromJSON(needs.check.outputs.has_changes) }}
     uses: ./.github/workflows/deploy.yml
