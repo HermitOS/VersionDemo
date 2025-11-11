@@ -1,0 +1,28 @@
+name: Nightly Deploy
+on:
+  schedule:
+    - cron: "5 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nightly-rollup-${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.rollup.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - id: rollup
+        uses: hermitos/actions/tag-rollup@v1
+
+  call-deploy:
+    needs: check
+    if: needs.check.outputs.has_changes == 'true'
+    uses: ./.github/workflows/deploy.yml
