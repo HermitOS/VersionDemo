@@ -13,4 +13,4 @@ jobs:
         run: |
           # your full deploy here, can be multiple steps to
       - name: Update last-deploy tag
-        uses: hermitos/actions/tag-push@v1
+        uses: hermitos/tag-deploy-actions/tag-push@v1
